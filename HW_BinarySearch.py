@@ -10,7 +10,7 @@ def binary_search_re(start, end, target):
     elif target < num:
         binary_search_re(start, lst[mid - 1], target)
     else:
-        binary_search_re(lst[mid+1], end, target)
+        binary_search_re(lst[mid + 1], end, target)
 
 
 if __name__ == '__main__':
