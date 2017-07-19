@@ -42,9 +42,9 @@ class LinkedList:
         self.num_data += 1
 
     def traverse(self, mode='next'):
+        if self.empty():
+            return None
         if mode == 'first':
-            if self.empty():
-                return None
             self.before = self.head
             self.current = self.head
         # mode = 'next'
@@ -62,7 +62,6 @@ class LinkedList:
 
         # 3. 마지막 데이터를 삭제할때(tail, current가 삭제할 노드를 가리킬때)
         ret_data = self.current.data
-        self.num_data -= 1
         # 1. 1개만 남은 데이터를 삭제할때(before, current, head, tail이 남은 노드를 가리킬때)
         if self.size() == 1:
             self.head = None
@@ -81,6 +80,7 @@ class LinkedList:
                 self.tail = self.before
             self.before.next = self.current.next
             self.current = self.before
+        self.num_data -= 1
         return ret_data
 
 
