@@ -7,12 +7,14 @@ class Stack(list):
     # pop은 기존 list.pop 사용. 인자가 없으면 마지막 데이터를 삭제하고 반환
 
     def empty(self):
+        # 데이터가 비어있는지 확인
         if not self:
             return True
         else:
             return False
 
     def peek(self):
+        # 리스트의 마지막 데이터 반환
         return self[-1]
 
 

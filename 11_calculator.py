@@ -5,13 +5,14 @@ from stack import Stack
 
 class Calculator:
     def __init__(self):
-        self.org_exp = None  # 중위표기법
+        self.org_exp = None  # 중위표기법 (사용자 입력 수식)
         self.postfix_exp = None  # 후위표기법
         self.result = None
 
     def set_org_exp(self, org_exp):
         # 입력한 수식 정리하는 함수
         self.org_exp = org_exp.replace(' ', '')
+        # 초기화 (이전 계산값이 남아있을수 있으므로)
         self.postfix_exp = None
         self.result = None
 
@@ -35,7 +36,7 @@ class Calculator:
         oprt_stack = Stack()
         # 입력된 수식을 한글자씩 순회
         for ch in self.get_org_exp():
-            # 숫자일때
+            # ch가 숫자일때
             if ch.isdigit():
                 # 리스트에 추가
                 exp_list.append(ch)
@@ -56,13 +57,17 @@ class Calculator:
                         # 다시 stack의 마지막 데이터를 지우면서 가지고 와서 ( 가 나올때까지 while
                         op = oprt_stack.pop()
                 # +, -, *, / 일때
-                #
+                # ch의 가중치가 stack에 있는 연산자의 가중치가 작거나 같을때
                 elif self.get_weight(ch) > self.get_weight(oprt_stack.peek()):
                     oprt_stack.push(ch)
                 else:
+                    # ch의 가중치가 stack에 있는 연산자의 가중치가 작거나 같을때
+                    # oprt_stack 가 비어있지않은지 먼저 확인하고 가중치 비교
                     while oprt_stack and self.get_weight(ch) <= self.get_weight(oprt_stack.peek()):
-                        exp_list.append(ch)
-                    # exp_list.append(ch)
+                        # 스택에서 삭제하면서 리스트에 추가
+                        exp_list.append(oprt_stack.pop())
+                    #
+                    oprt_stack.push(ch)
         # 다 돌고나서 연산자가 남아있을 경우
         while oprt_stack:
             exp_list.append(oprt_stack.pop())
@@ -86,7 +91,18 @@ class Calculator:
             return oprd1 / oprd2
 
     def calculator(self):
-        pass
+        oprd_stack = Stack()
+        # 접근자가 있으면 클래스외부에서 접근할땐 항상 그함수를 통해 접근해야함.
+        for ch in self.get_postfix_exp():
+            if ch.isdigit():
+                oprd_stack.push(int(ch))
+            else:
+                oprd2 = oprd_stack.pop()
+                oprd1 = oprd_stack.pop()
+                oprd_stack.push(
+                        self.calc_two_oprd(oprd1, oprd2, ch)
+                )
+        self.result = oprd_stack.pop()
 
     def get_result(self):
         if not self.result:
