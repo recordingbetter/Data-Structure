@@ -3,7 +3,6 @@ class Stack(list):
     # 위 코드와 같다.
     # def push(self, data):
     #     super().append(data)
-
     # pop은 기존 list.pop 사용. 인자가 없으면 마지막 데이터를 삭제하고 반환
 
     def empty(self):
